@@ -9,7 +9,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String a = "DD";
-        String b = "yoloooooo";
+        String b = "yoloooooo"
         setContentView(R.layout.activity_login);
     }
 }
