@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">FitFriend</string>
     <string name="menybutton">Main</string>
+    <string name="app_id">288405374858436</string>
+    <string name="action_settings">LogOut</string>
+
 </resources>
