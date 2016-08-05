@@ -16,7 +16,8 @@
         android:hint="@string/menybutton"
         android:id="@+id/button8"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="gotomain"/>
 
     <ImageView
         android:layout_width="300dp"
