@@ -16,6 +16,6 @@ public class LoginActivity extends AppCompatActivity {
         //if login successful go to activity main
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
-        super.onStop();
+        super.finish();
     }
 }
