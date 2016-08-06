@@ -3,5 +3,7 @@
     <string name="menybutton">Main</string>
     <string name="app_id">288405374858436</string>
     <string name="action_settings">LogOut</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 
 </resources>

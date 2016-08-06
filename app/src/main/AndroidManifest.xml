@@ -17,25 +17,43 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider"
             android:exported="true" />
 
-        <activity android:name=".LoginActivity">
-            <intent-filter>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/splashScreenTheme" >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SwipeActivity" />
-        <activity android:name=".ViewprofileActivity" />
-        <activity android:name=".FriendlistActivity" />
-        <activity android:name=".TestActivity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light"/>
+        <activity
+            android:name=".SwipeActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light"/>
+        <activity
+            android:name=".ViewprofileActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light"/>
+        <activity
+            android:name=".FriendlistActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light"/>
+        <activity
+            android:name=".TestActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light"/>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light">
+        </activity>
     </application>
 
 </manifest>
