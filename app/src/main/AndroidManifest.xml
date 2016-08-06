@@ -26,34 +26,35 @@
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/splashScreenTheme" >
-        <intent-filter>
+            android:theme="@style/splashScreenTheme">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".SwipeActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".ViewprofileActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".FriendlistActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".TestActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light">
-        </activity>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
+        <activity android:name=".FacebookRegActivity"></activity>
     </application>
 
 </manifest>
