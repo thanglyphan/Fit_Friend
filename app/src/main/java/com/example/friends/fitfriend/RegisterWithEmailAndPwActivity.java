@@ -82,7 +82,9 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
                                 //Add user to database here.
                                 FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
                                 user = new User(name, email, birthday, gender, userF.getUid());
-                                mDatabase.child("users").child(userF.getUid()).setValue(user);
+                                EmailConverter emailCon = new EmailConverter(email);
+                                String validEmail = emailCon.getEmail();
+                                mDatabase.child("users").child(validEmail).setValue(user);
                                 //Database done.
 
                                 Toast.makeText(RegisterWithEmailAndPwActivity.this, "Account created, login!", Toast.LENGTH_SHORT).show();

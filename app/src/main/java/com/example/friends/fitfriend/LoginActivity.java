@@ -15,8 +15,11 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,30 +27,47 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
 
     EditText email;
     EditText password;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
+
+    private String emailValue;
 
     //Facebook login button
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
             Profile profile = Profile.getCurrentProfile();
-            nextActivity(profile);
+            Log.d("THANGGGGGGGGGGG first", emailValue);
+            nextActivity(profile, "", null);
         }
         @Override
         public void onCancel() {        }
         @Override
         public void onError(FacebookException e) {      }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Facebook login
+        Profile profile = Profile.getCurrentProfile();
+        nextActivity(profile, "Lol", "");
+    }
 
     private void loginFirebase(){
         Intent intent = getIntent();
@@ -71,47 +91,57 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d("SIGNED OUT BRO", "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
     }
 
     private void loginFacebook(){
-        callbackManager = CallbackManager.Factory.create();
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
-            }
-        };
-
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile);
-            }
-        };
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
-
         LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
-        callback = new FacebookCallback<LoginResult>() {
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
+
+        callbackManager = CallbackManager.Factory.create();
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
-                nextActivity(profile);
-                Toast.makeText(getApplicationContext(), "Logget inn!", Toast.LENGTH_SHORT).show();    }
+                // App code
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
+                                // Application code
+                                try {
+                                    Profile profile = Profile.getCurrentProfile();
+                                    emailValue = object.getString("email");
+                                    String birthday = object.getString("birthday"); // 01/31/1980 format
+                                    nextActivity(profile, emailValue, birthday);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
 
             @Override
             public void onCancel() {
+                // App code
+                Log.v("LoginActivity", "cancel");
             }
 
             @Override
-            public void onError(FacebookException e) {
+            public void onError(FacebookException exception) {
+                // App code
+                Log.v("LoginActivity", exception.getCause().toString());
             }
-        };
-        loginButton.setReadPermissions("user_friends");
-        loginButton.registerCallback(callbackManager, callback);
+        });
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,17 +152,12 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         loginFirebase(); //Method for logging in with firebase auth.
         loginFacebook(); //Method for logging in with facebook auth.
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Facebook login
-        Profile profile = Profile.getCurrentProfile();
-        nextActivity(profile);
-    }
 
     @Override
     protected void onPause() {
@@ -150,9 +175,6 @@ public class LoginActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-        //Facebook login
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
     }
 
     @Override
@@ -190,15 +212,39 @@ public class LoginActivity extends AppCompatActivity {
         //Finish signing in.
     }
 
-    private void nextActivity(Profile profile){
+    private void nextActivity(Profile profile, String email, String birthday){
         if(profile != null){
             //Change TestActivity to MainActivity?, ViewprofileActivity? when importing database.
+            boolean found = false;
+            //Log.d("LOGINNNNNNNNNNNNNNNNNNN", "" + email.toString());
+            EmailConverter emailCon = new EmailConverter(email);
+            String a = emailCon.getEmail();
+
+
             Intent main = new Intent(LoginActivity.this, TestActivity.class);
             main.putExtra("name", profile.getFirstName());
             main.putExtra("surname", profile.getLastName());
             main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
             startActivity(main);
             LoginActivity.this.finish();
+
+
+            //TODO: SEARCH FOR USER HERE.
+
+            //Check database if email is registered.
+            /*
+            if(found){
+                Intent main = new Intent(LoginActivity.this, TestActivity.class);
+                main.putExtra("name", profile.getFirstName());
+                main.putExtra("surname", profile.getLastName());
+                main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
+                startActivity(main);
+                LoginActivity.this.finish();
+            }else{
+                LoginManager.getInstance().logOut();
+                Toast.makeText(this, "You need to make an account", Toast.LENGTH_SHORT).show();
+            }
+            */
         }
     }
 
