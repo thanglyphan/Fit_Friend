@@ -54,6 +54,9 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Base.Theme.AppCompat.Light" />
+        <activity
+            android:name=".RegisterWithEmailAndPwActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity android:name=".FacebookRegActivity"></activity>
     </application>
 

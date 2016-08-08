@@ -18,6 +18,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
 
+
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -44,11 +46,22 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         public void onError(FacebookException e) {      }
     };
+
+
+    @Override
+    public void onBackPressed() {
+        Log.d("Back is pressed REG", "HELLOOOOOOOOO");
+        LoginManager.getInstance().logOut();
+        Intent goToLogin = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(goToLogin);
+        RegisterActivity.this.finish();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_register);
+        Log.d("RegisterActivity", "BLALLALLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 
         LoginButton loginButton = (LoginButton)findViewById(R.id.signup_facebook_btn);
         loginButton.setReadPermissions(Arrays.asList(
@@ -83,8 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
                 parameters.putString("fields", "id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
-
-
             }
 
             @Override
@@ -99,50 +110,13 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.v("LoginActivity", exception.getCause().toString());
             }
         });
-
-
-        /*
-        callbackManager = CallbackManager.Factory.create();
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
-            }
-        };
-
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile);
-            }
-        };
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
-
-        callback = new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
-                nextActivity(profile);
-                Toast.makeText(getApplicationContext(), "Logget inn!", Toast.LENGTH_SHORT).show();    }
-
-            @Override
-            public void onCancel() {
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-            }
-        };
-        loginButton.registerCallback(callbackManager, callback);
-        */
     }
     @Override
     protected void onResume() {
         super.onResume();
-        //Facebook login
-        Profile profile = Profile.getCurrentProfile();
-        nextActivity(profile, "", "");
+        //Useless
+        //Profile profile = Profile.getCurrentProfile();
+        //nextActivity(profile, "", "");
     }
 
     @Override
@@ -155,7 +129,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
     protected void onStop() {
         super.onStop();
-        //Facebook login
     }
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
@@ -180,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void registerEmailPw(View view){
+    public void registerEmailPw(View view){
         Intent regEmail = new Intent(RegisterActivity.this, RegisterWithEmailAndPwActivity.class);
         startActivity(regEmail);
         RegisterActivity.this.finish();

@@ -1,7 +1,6 @@
 package com.example.friends.fitfriend;
 
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,11 +28,12 @@ public class FacebookRegActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_facebook_reg);
 
         mAuth = FirebaseAuth.getInstance();
 
-
+        Log.d("FACEBOOK ACTIVITY", "LOOOOOOOOOOL");
         nameView = (EditText)findViewById(R.id.facebook_name_text);
         emailView = (EditText)findViewById(R.id.facebook_email);
         birthdayView = (EditText)findViewById(R.id.faceboook_birthday);
@@ -50,9 +51,20 @@ public class FacebookRegActivity extends AppCompatActivity {
         birthdayView.setText("" + birthday);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        LoginManager.getInstance().logOut();
+        Intent goBackToReg = new Intent(FacebookRegActivity.this, RegisterActivity.class);
+        mAuth.signOut();
+        startActivity(goBackToReg);
+        this.finish();
+    }
+
+
     public void createAccount(View view){
         String name = nameView.getText().toString();
-        String email = emailView.getText().toString();
+        final String email = emailView.getText().toString();
         String birthday = birthdayView.getText().toString();
         String password = passwordView.getText().toString();
         String passwordConfirmed = passwordConfirmedView.getText().toString();
@@ -70,18 +82,19 @@ public class FacebookRegActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("LOL", "createUserWithEmail:onComplete:" + task.isSuccessful());
                             if(task.isSuccessful()){
-
+                                LoginManager.getInstance().logOut();
                                 Intent mainIntent = new Intent(FacebookRegActivity.this, LoginActivity.class);
                                 mainIntent.putExtra("Email", emailView.getText().toString());
                                 mainIntent.putExtra("Password", passwordView.getText().toString());
 
                                 Toast.makeText(FacebookRegActivity.this, "Account created, login!", Toast.LENGTH_SHORT).show();
 
-                                LoginManager.getInstance().logOut();
-                                FacebookRegActivity.this.startActivity(mainIntent);
+
+                                startActivity(mainIntent);
                                 FacebookRegActivity.this.finish();
                             }else {
-                                Toast.makeText(FacebookRegActivity.this, "Failed to create user.", Toast.LENGTH_SHORT).show();
+                                LoginManager.getInstance().logOut();
+                                Toast.makeText(FacebookRegActivity.this, "Email adresse " + email + " has been taken.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });//Finish created user

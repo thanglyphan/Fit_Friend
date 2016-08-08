@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,6 +35,14 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d("Back is pressed", "HELLOOOOOOOOO");
+        Intent regView = new Intent(RegisterWithEmailAndPwActivity.this, RegisterActivity.class);
+        startActivity(regView);
+        RegisterWithEmailAndPwActivity.this.finish();
+    }
+
     public void createNewAccountClick(View v){
         String email = Email.getText().toString();
         String password = Password.getText().toString();
@@ -56,9 +65,7 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
                                 Intent mainIntent = new Intent(RegisterWithEmailAndPwActivity.this, LoginActivity.class);
                                 mainIntent.putExtra("Email", Email.getText().toString());
                                 mainIntent.putExtra("Password", Password.getText().toString());
-
                                 Toast.makeText(RegisterWithEmailAndPwActivity.this, "Account created, login!", Toast.LENGTH_SHORT).show();
-
                                 RegisterWithEmailAndPwActivity.this.startActivity(mainIntent);
                                 RegisterWithEmailAndPwActivity.this.finish();
                             }else {
