@@ -14,6 +14,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
 
@@ -21,6 +24,9 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
     private EditText Password;
     private EditText PasswordConfirm;
     private FirebaseAuth mAuth;
+    private User user;
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,9 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
         Password = (EditText)findViewById(R.id.newPasswordEdit);
         PasswordConfirm = (EditText)findViewById(R.id.newPasswordConfirmEdit);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
     }
 
     @Override
@@ -44,7 +53,7 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
     }
 
     public void createNewAccountClick(View v){
-        String email = Email.getText().toString();
+        final String email = Email.getText().toString();
         String password = Password.getText().toString();
         String pwconfirm = PasswordConfirm.getText().toString();
 
@@ -65,6 +74,17 @@ public class RegisterWithEmailAndPwActivity extends AppCompatActivity {
                                 Intent mainIntent = new Intent(RegisterWithEmailAndPwActivity.this, LoginActivity.class);
                                 mainIntent.putExtra("Email", Email.getText().toString());
                                 mainIntent.putExtra("Password", Password.getText().toString());
+                                //TODO: Make buttons for under
+                                String name = "Thang Phan";
+                                String birthday = "12/11/1993";
+                                String gender = "Male";
+
+                                //Add user to database here.
+                                FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
+                                user = new User(name, email, birthday, gender, userF.getUid());
+                                mDatabase.child("users").child(userF.getUid()).setValue(user);
+                                //Database done.
+
                                 Toast.makeText(RegisterWithEmailAndPwActivity.this, "Account created, login!", Toast.LENGTH_SHORT).show();
                                 RegisterWithEmailAndPwActivity.this.startActivity(mainIntent);
                                 RegisterWithEmailAndPwActivity.this.finish();
