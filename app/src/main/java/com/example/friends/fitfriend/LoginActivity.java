@@ -33,7 +33,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -220,19 +223,23 @@ public class LoginActivity extends AppCompatActivity {
             EmailConverter emailCon = new EmailConverter(email);
             String a = emailCon.getEmail();
 
-
+            /*
             Intent main = new Intent(LoginActivity.this, TestActivity.class);
             main.putExtra("name", profile.getFirstName());
             main.putExtra("surname", profile.getLastName());
             main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
             startActivity(main);
             LoginActivity.this.finish();
-
+            */
 
             //TODO: SEARCH FOR USER HERE.
-
-            //Check database if email is registered.
+            FirebaseChild child = new FirebaseChild();
+            child.checkUser();
+            List<User> l = new ArrayList<User>();
+            l = child.getUsers();
+            System.out.println("YALLAAAAAAAAAAAAAAAAAAAAAAA" + child.getUsers().size());
             /*
+            //Check database if email is registered.
             if(found){
                 Intent main = new Intent(LoginActivity.this, TestActivity.class);
                 main.putExtra("name", profile.getFirstName());
