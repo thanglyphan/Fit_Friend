@@ -1,6 +1,7 @@
 package com.example.friends.fitfriend;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -235,9 +236,8 @@ public class LoginActivity extends AppCompatActivity {
             //TODO: SEARCH FOR USER HERE.
             FirebaseChild child = new FirebaseChild();
             child.checkUser();
-            List<User> l = new ArrayList<User>();
-            l = child.getUsers();
-            System.out.println("YALLAAAAAAAAAAAAAAAAAAAAAAA" + child.getUsers().size());
+            //TODO: NOT WORKING
+
             /*
             //Check database if email is registered.
             if(found){
@@ -254,6 +254,8 @@ public class LoginActivity extends AppCompatActivity {
             */
         }
     }
+
+
 
     public void createAccountClick(View v){
         Intent createAccountIntent = new Intent(this, RegisterActivity.class);

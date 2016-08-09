@@ -1,8 +1,5 @@
 package com.example.friends.fitfriend;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.FitWindowsFrameLayout;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,14 +16,15 @@ import java.util.Map;
 /**
  * Created by thang on 09.08.2016.
  */
-public class FirebaseChild extends AppCompatActivity{
+public class FirebaseChild{
     private DatabaseReference mDatabase;
-    List<User> userList = new ArrayList<User>();
+    List<User> userList;
     public FirebaseChild(){
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        userList = new ArrayList<User>();
     }
 
-    public void checkUser(){
+    public List<User> checkUser(){
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -43,6 +41,7 @@ public class FirebaseChild extends AppCompatActivity{
             }
         };
         mDatabase.addValueEventListener(userListener);
+        return userList;
     }
     public List getUsers(){
         return userList;
