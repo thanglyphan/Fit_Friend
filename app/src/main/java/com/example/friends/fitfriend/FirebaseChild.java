@@ -1,5 +1,6 @@
 package com.example.friends.fitfriend;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -10,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +20,13 @@ import java.util.Map;
  */
 public class FirebaseChild{
     private DatabaseReference mDatabase;
-    List<User> userList;
+    HashSet<User> userList;
     public FirebaseChild(){
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-        userList = new ArrayList<User>();
+        userList = new HashSet<User>();
     }
 
-    public List<User> checkUser(){
+    public HashSet<User> checkUser(){
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -43,7 +45,8 @@ public class FirebaseChild{
         mDatabase.addValueEventListener(userListener);
         return userList;
     }
-    public List getUsers(){
+
+    public HashSet<User> getUsers(){
         return userList;
     }
 

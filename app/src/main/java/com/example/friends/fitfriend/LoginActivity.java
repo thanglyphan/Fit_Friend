@@ -48,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
+    private FirebaseChild child;
+
 
     private String emailValue;
 
@@ -152,7 +154,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-
+        child = new FirebaseChild();
+        child.checkUser();
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
 
@@ -234,11 +237,21 @@ public class LoginActivity extends AppCompatActivity {
             */
 
             //TODO: SEARCH FOR USER HERE.
-            FirebaseChild child = new FirebaseChild();
-            child.checkUser();
+            System.out.println(child.checkUser().size());
+            for(User user: child.getUsers()){
+                System.out.println(user.email + " " + email);
+                if(user.email.equals(email)){
+                    found = true;
+                    break;
+                }else{
+                    found = false;
+                }
+            }
+
+
             //TODO: NOT WORKING
 
-            /*
+
             //Check database if email is registered.
             if(found){
                 Intent main = new Intent(LoginActivity.this, TestActivity.class);
@@ -251,7 +264,6 @@ public class LoginActivity extends AppCompatActivity {
                 LoginManager.getInstance().logOut();
                 Toast.makeText(this, "You need to make an account", Toast.LENGTH_SHORT).show();
             }
-            */
         }
     }
 
