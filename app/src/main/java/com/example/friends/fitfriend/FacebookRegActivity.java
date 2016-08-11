@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FacebookRegActivity extends AppCompatActivity {
     EditText nameView;
@@ -23,6 +26,10 @@ public class FacebookRegActivity extends AppCompatActivity {
     EditText passwordView;
     EditText passwordConfirmedView;
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+
+    private User user;
+
 
 
     @Override
@@ -32,6 +39,7 @@ public class FacebookRegActivity extends AppCompatActivity {
         setContentView(R.layout.activity_facebook_reg);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Log.d("FACEBOOK ACTIVITY", "LOOOOOOOOOOL");
         nameView = (EditText)findViewById(R.id.facebook_name_text);
@@ -86,6 +94,18 @@ public class FacebookRegActivity extends AppCompatActivity {
                                 Intent mainIntent = new Intent(FacebookRegActivity.this, LoginActivity.class);
                                 mainIntent.putExtra("Email", emailView.getText().toString());
                                 mainIntent.putExtra("Password", passwordView.getText().toString());
+
+                                String name = "Thang Phan";
+                                String birthday = "12/11/1993";
+                                String gender = "Male";
+
+                                //Add user to database here.
+                                FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
+                                user = new User(name, email, birthday, gender, userF.getUid());
+                                EmailConverter emailCon = new EmailConverter(email);
+                                String validEmail = emailCon.getEmail();
+                                mDatabase.child("users").child(validEmail).setValue(user);
+                                //Database done.
 
                                 Toast.makeText(FacebookRegActivity.this, "Account created, login!", Toast.LENGTH_SHORT).show();
 
