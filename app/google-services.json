@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "793057272680",
+    "firebase_url": "https://fitfriend-57e7c.firebaseio.com",
+    "project_id": "fitfriend-57e7c",
+    "storage_bucket": "fitfriend-57e7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793057272680:android:c348de204f70ec5f",
+        "android_client_info": {
+          "package_name": "com.example.friends.fitfriend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793057272680-f2a1l6547e5q0mhnn6pnq1o4lj0cjdeo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.friends.fitfriend",
+            "certificate_hash": "7DEC38A708F4B469EAF33A2F6351891FD0485214"
+          }
+        },
+        {
+          "client_id": "793057272680-0849gcis1ub6k3os6silpqatlgfcl93c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.friends.fitfriend",
+            "certificate_hash": "2D6313C3D7229832DA1535F9E7065F846AF77C05"
+          }
+        },
+        {
+          "client_id": "793057272680-irl3ef9tpeq2lc1hh51l81ld9k010pvf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.friends.fitfriend",
+            "certificate_hash": "54BEABE1A286508ED2CA1B62FBD2934F9448EBC6"
+          }
+        },
+        {
+          "client_id": "793057272680-hr6g6fjjil9p0i2kakgfo62bfd5r1nf4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi2D_c8pZ16AMRvgzyerkSx2Bd38up7g4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793057272680-hr6g6fjjil9p0i2kakgfo62bfd5r1nf4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

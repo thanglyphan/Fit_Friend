@@ -25,6 +25,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -158,7 +159,6 @@ public class LoginActivity extends AppCompatActivity {
         child.checkUser();
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         loginFirebase(); //Method for logging in with firebase auth.
